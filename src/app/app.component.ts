@@ -124,57 +124,7 @@ export class AppComponent {
     console.info(
       "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
     );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
-    console.info(
-      "视觉效果及具体实现来源：动态排名数据可视化 ver1.3 By Jannchie，https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js ，扩展 By cigaret"
-    );
+
   }
 
   getFile(input) {
