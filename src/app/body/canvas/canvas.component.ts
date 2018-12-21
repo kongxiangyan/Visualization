@@ -22,21 +22,24 @@ export class CanvasComponent implements OnInit {
     this.svg.innerHTML = "";
   }
 
-  draw() {
-    this.areaReset();
-    let config = this.config;
-    let data = this.data;
-    let date = [];
-    console.info(data);
+  dataFormat(data) {
+    return {
+      data: data,
+      time: this.dataDateFormat(data),
+      name_list: this.dataExtractName(data)
+    };
+  }
 
+  dataDateFormat(data) {
+    let date = [];
     // 遍历读入date
-    data.forEach(element => {
-      if (date.indexOf(element["date"]) == -1) {
-        date.push(element["date"]);
+    data.forEach(item => {
+      if (date.indexOf(item["date"]) == -1) {
+        date.push(item["date"]);
       }
     });
 
-    let auto_sort = config.auto_sort;
+    let auto_sort = this.config.auto_sort;
     let time;
     if (auto_sort) {
       time = date.sort((x, y) => Number(new Date(x)) - Number(new Date(y)));
@@ -44,30 +47,51 @@ export class CanvasComponent implements OnInit {
       time = date;
     }
 
-    let use_semilogarithmic_coordinate = config.use_semilogarithmic_coordinate;
-    let big_value = config.big_value;
-    let divide_by = config.divide_by;
+    return time;
+  }
 
-    let name_list = [];
-
+  dataExtractName(data) {
+    let names = [];
     // 遍历读入name
     data
       .sort((a, b) => Number(b.value) - Number(a.value))
-      .forEach(e => {
-        if (name_list.indexOf(e.name) == -1) {
-          name_list.push(e.name);
+      .forEach(item => {
+        if (names.indexOf(item.name) == -1) {
+          names.push(item.name);
         }
       });
 
+    return names;
+  }
+
+  draw() {
+    // 清空SVG区域
+    this.areaReset();
+
+    let config = this.config;
+
+    // 数据格式化
+    let format_data = this.dataFormat(this.data);
+    console.info(format_data);
+
+    let data = format_data.data;
+    let time = format_data.time;
+    let name_list = format_data.name_list;
+
+    let use_semilogarithmic_coordinate = config.use_semilogarithmic_coordinate; // 半对数坐标
+    let big_value = config.big_value; // 坐标原点变换为（最小值）*2-（最大值）
+    let divide_by = config.divide_by; // 颜色根据什么字段区分
+
     let rate = [];
-    let colorRange = d3.interpolateCubehelix("#003AAB", "#01ADFF");
-    let changeable_color = config.changeable_color;
+
     // 选择颜色
-    function getColor(d) {
+    function getColor(data) {
+      let colorRange = d3.interpolateCubehelix("#003AAB", "#01ADFF"); // 颜色绑定增长率
       let r = 0.0;
-      if (changeable_color) {
+
+      if (config.changeable_color) {
         let v =
-          Math.abs(rate[d.name] - rate["MIN_RATE"]) /
+          Math.abs(rate[data.name] - rate["MIN_RATE"]) /
           (rate["MAX_RATE"] - rate["MIN_RATE"]); // 0-1标准化
         if (isNaN(v) || v == -1) {
           return colorRange(0.6); // ???为什么要0.6
@@ -75,9 +99,12 @@ export class CanvasComponent implements OnInit {
         return colorRange(v);
       }
 
-      if (d[divide_by] in config.color) return config.color[d[divide_by]];
-      else {
-        return d3.schemeCategory10[Math.floor(d[divide_by].charCodeAt() % 10)];
+      if (data[divide_by] in config.color) {
+        return config.color[data[divide_by]];
+      } else {
+        return d3.schemeCategory10[
+          Math.floor(data[divide_by].charCodeAt() % 10)
+        ]; // 随机选择一个颜色
       }
     }
 
@@ -105,54 +132,62 @@ export class CanvasComponent implements OnInit {
 
     // 使用计数器
     let use_counter = config.use_counter;
-    // 每个数据的间隔日期
-    let step = config.step;
-    let long = config.long;
-    let format = config.format;
-    let left_margin = config.left_margin;
-    let right_margin = config.right_margin;
-    let top_margin = config.top_margin;
-    let bottom_margin = config.bottom_margin;
+    if (use_counter) {
+      var step = config.step; // 每个数据的间隔日期
+    }
+
+    let long = config.long; // barinfo太长？也许可以试试这个
+    let format = config.format; // 格式化数值
+
     let timeFormat = config.timeFormat;
-    let item_x = config.item_x;
-    let max_number = config.max_number;
-    let reverse = config.reverse;
-    let text_x = config.text_x;
-    let offset = config.offset;
+    let item_x = config.item_x; // 榜首项目信息的水平位置
+    let max_number = config.max_number; // 每个时间节点最多显示的条目数。
+    let reverse = config.reverse; // 倒序，使得最短的条位于最上方
+    let text_x = config.text_x; // 右侧文字横坐标
+    let offset = config.offset; // 偏移量
     let animation = config.animation;
+
     const margin = {
-      left: left_margin,
-      right: right_margin,
-      top: top_margin,
-      bottom: bottom_margin
+      left: config.left_margin,
+      right: config.right_margin,
+      top: config.top_margin,
+      bottom: config.bottom_margin
     };
 
-    var enter_from_0 = config.enter_from_0;
+    let enter_from_0 = config.enter_from_0; // 设置动画效果，如果为true，则新进入的条目从0开始
     interval_time /= 3;
-    var lastData = [];
-    var currentdate = time[0].toString();
-    var currentData = [];
+
+    let lastData = [];
+    let currentdate = time[0].toString();
+    let currentData = [];
+
     var lastname;
+
     const svg = d3.select("svg");
 
+    // 拿到SVG区域的尺寸
     let style = window.getComputedStyle(this.svg);
     const width = parseInt(style.width);
     const height = parseInt(style.height);
     console.info(width, height);
 
+    // 计算作图区域的真实大小
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom - 32;
-    var dateLabel_y = height - margin.top - margin.bottom - 32;
-    const xValue = d => Number(d.value);
-    const yValue = d => d.name;
 
-    const g = svg
+    let xValue = param_d => Number(param_d.value);
+    let yValue = param_d => param_d.name;
+
+    // 绘制真实作图区域
+    let g = svg
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
-    const xAxisG = g
+    // 绘制x轴
+    let xAxisG = g
       .append("g")
       .attr("transform", `translate(0, ${innerHeight})`);
-    const yAxisG = g.append("g");
+    // 绘制y轴
+    let yAxisG = g.append("g");
 
     xAxisG
       .append("text")
@@ -160,12 +195,13 @@ export class CanvasComponent implements OnInit {
       .attr("x", innerWidth / 2)
       .attr("y", 100);
 
-    var xScale = d3.scaleLinear();
-    if (use_semilogarithmic_coordinate) {
+    var xScale;
+    if ( use_semilogarithmic_coordinate ) {
       xScale = d3.scalePow().exponent(0.5);
     } else {
       xScale = d3.scaleLinear();
     }
+
     const yScale = d3
       .scaleBand()
       .paddingInner(0.3)
@@ -200,7 +236,6 @@ export class CanvasComponent implements OnInit {
       .attr("text-anchor", function() {
         return "end";
       })
-
       .text(currentdate);
 
     var topLabel = g
@@ -208,6 +243,8 @@ export class CanvasComponent implements OnInit {
       .attr("class", "topLabel")
       .attr("x", item_x)
       .attr("y", text_y);
+
+    var dateLabel_y = height - margin.top - margin.bottom - 32;
 
     function dataSort() {
       if (reverse) {
@@ -340,7 +377,7 @@ export class CanvasComponent implements OnInit {
           .domain([0, d3.max(currentData, xValue) + 1])
           .range([0, innerWidth]);
       }
-      if (auto_sort) {
+      if (config.auto_sort) {
         dateLabel
           .data(currentData)
           .transition()
@@ -747,7 +784,7 @@ export class CanvasComponent implements OnInit {
     var i = 0;
     var p = config.wait;
     var update_rate = config.update_rate;
-    var inter = setInterval(function next() {
+    var inter = setInterval(() => {
       // 空过p回合
       while (p) {
         p -= 1;
@@ -761,8 +798,9 @@ export class CanvasComponent implements OnInit {
         window.clearInterval(Number(inter));
       }
     }, 3000 * interval_time);
+
     setInterval(() => {
-      console.log(currentData);
+    //   console.log(currentData);
       d3.transition().each(change);
     }, 3000 * update_rate * interval_time);
   }
