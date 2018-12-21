@@ -1,0 +1,7 @@
+<app-canvas fxFlex="1 1 auto" #svg [data]="data" [config]="config"></app-canvas>
+<span
+  (click)="svg.draw()"
+  style="cursor: pointer; background-color:aquamarine;position: absolute;
+z-index: 10;"
+  >开始播放</span
+>

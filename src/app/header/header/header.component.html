@@ -1,0 +1,19 @@
+<button mat-button>
+  <img src="assets/image/homepage/angular-white-transparent.svg" />
+  {{title}}
+</button>
+<button mat-button>
+  <label for="inputfile" title="点击上传文件">{{ file }}</label>
+  <input
+    type="file"
+    name="timeSeriesData"
+    id="inputfile"
+    hidden
+    (change)="getFile($event.target)"
+  />
+</button>
+<button mat-button *ngIf="if_file" (click)="draw()">START</button>
+<a mat-button href="https://github.com/kongxiangyan/Visualization">
+  <img src="assets/image/homepage/github-circle-white-transparent.svg" />
+  GitHub
+</a>

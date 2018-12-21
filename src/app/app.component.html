@@ -1,35 +1,16 @@
-
 <!-- 容器 -->
 <div fxLayout="column" fxLayoutAlign="stretch" style="height: 100%;">
   <!-- 顶部导航栏 -->
-  <div
-    class="navbar-header"
-    fxFlex="0 0 auto"
-    fxLayout="row"
-    fxLayoutAlign="space-between center"
-    style="background-color: #3f51b5; height: 56px; padding: 8px 16px;"
-  >
-    <button mat-button>
-      <img src="../assets/image/homepage/angular-white-transparent.svg" />
-      Visualization
-    </button>
-    <button mat-button>
-      <label for="inputfile" title="点击上传文件">{{ file }}</label>
-      <input
-        type="file"
-        name="timeSeriesData"
-        id="inputfile"
-        hidden
-        (change)="getFile($event.target)"
-      />
-    </button>
-    <button mat-button *ngIf="if_file" (click)="draw()">START</button>
-    <a mat-button href="https://github.com/kongxiangyan">
-      <img src="../assets/image/homepage/github-circle-white-transparent.svg" />
-      GitHub
-    </a>
+  <div class="header-navbar" fxFlex="0 0 auto">
+    <app-header
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      style="background-color: #3f51b5; height: 56px; padding: 8px 16px;"
+    ></app-header>
   </div>
   <!-- 页面主体 -->
-  <div fxFlex="1 1 auto" class="contentcontainer"><svg id="area"></svg></div>
+  <div fxFlex="1 1 auto" fxLayout="row" style="position: relative;">
+    <app-body fxFlex="1 1 auto" fxLayout="row"></app-body>
+  </div>
 </div>
 <router-outlet></router-outlet>
